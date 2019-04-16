@@ -6,7 +6,7 @@ In addition, TokenCore introduces the concept of 'identity', you can use the sam
 To install TokenCore, use CocoaPods and add this to your Podfile:
 
 ```
-pod "TokenCore", git: "https://github.com/consenlabs/token-core-ios.git", branch: "master"
+pod "TokenCore", git: "https://github.com/coinslabs/token-core-ios.git", branch: "master"
 ```
 
 ## Run the Example   
@@ -68,6 +68,7 @@ let txHahs = signResult.txHash // This is txHash which you can use for locating 
 
 ## Troubleshooting
 For macOS 10.14 Mojave and Xcode 10, install `/Library/Developer/CommandLineTools/Packages/macOS_SDK_headers_for_macOS_10.14.pkg` since Xcode command line tools don't install to `/usr/include` anymore.
+
 
 ## TODO
 - [ ] Test on Objective-C   

@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import TokenCoreDep.libscrypt
 import secp256k1
 
 extension Encryptor {

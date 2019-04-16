@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import TokenCoreDep.libscrypt
+import libscrypt
 
 extension Encryptor {
   class Scrypt {

